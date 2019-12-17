@@ -56,9 +56,8 @@ block content %}
       = true) }}
     </div>
     <div class="form-group">
-      <label for="seeking_talent">
-        Seeking Talent &nbsp; {{ form.seeking_talent(autofocus = true) }}
-      </label>
+      <label for="seeking_talent">Seeking Talent</label>
+      {{ form.seeking_talent(autofocus = true, value='') }}
     </div>
     <div class="form-group">
       <label for="seeking_description">Seeking Description</label>

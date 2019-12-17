@@ -11,7 +11,6 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 import logging
 from logging import Formatter, FileHandler
-from flask_wtf import Form
 from forms import *
 from models import db, Venue, Artist
 from flask_migrate import Migrate
@@ -64,14 +63,14 @@ def venues():
 
     for venue in venues:
         if (venue.city, venue.state) not in cities:
-            data[venue.state] = {
+            data[(venue.city, venue.state)] = {
                 'city': venue.city,
                 'state': venue.state,
                 'venues': [venue.serialize()]
             }
             cities.append((venue.city, venue.state))
         else:
-            data[venue.state]['venues'].append(venue.serialize())
+            data[(venue.city, venue.state)]['venues'].append(venue.serialize())
     return render_template('pages/venues.html', areas=data)
 
 
@@ -123,6 +122,9 @@ def create_venue_submission():
         venue.genres = ','.join(request.form.getlist('genres'))
         venue.facebook_link = request.form['facebook_link']
         venue.image_link = request.form['image_link']
+        venue.website = request.form['website']
+        venue.seeking_talent = request.form.get('seeking_ talent') is not None
+        venue.seeking_description = request.form['seeking_description']
         db.session.add(venue)
         db.session.commit()
     except:
