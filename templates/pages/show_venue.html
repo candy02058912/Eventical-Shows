@@ -6,6 +6,7 @@ block content %}
       {{ venue.name }}
     </h1>
     <a href="/venues/{{venue.id}}/edit" class="btn btn-primary">Edit Venue</a>
+    <button id="delete-venue" class="btn btn-primary">Delete Venue</button>
     <p class="subtitle">
       ID: {{ venue.id }}
     </p>
@@ -65,7 +66,7 @@ block content %}
     == 1 %}Show{% else %}Shows{% endif %}
   </h2>
   <div class="row">
-    {%for show in venue.upcoming_shows %}
+    {% for show in venue.upcoming_shows %}
     <div class="col-sm-4">
       <div class="tile tile-show">
         <img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
@@ -98,4 +99,15 @@ block content %}
   </div>
 </section>
 
+{% endblock %} {% block script %}
+<script>
+  $("#delete-venue").click(() => {
+    $.ajax({
+      method: "DELETE",
+      url: "/venues/{{venue.id}}"
+    }).done(function(page) {
+      document.write(page);
+    });
+  });
+</script>
 {% endblock %}
