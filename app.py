@@ -111,24 +111,28 @@ def create_venue_form():
 
 @app.route('/venues/create', methods=['POST'])
 def create_venue_submission():
-    error = False
+    form = VenueForm()
+    if not form.validate():
+        flash(form.errors)
+        return render_template('forms/new_venue.html', form=form)
+    error=False
     try:
-        venue = Venue()
-        venue.name = request.form['name']
-        venue.city = request.form['city']
-        venue.state = request.form['state']
-        venue.address = request.form['address']
-        venue.phone = request.form['phone']
-        venue.genres = ','.join(request.form.getlist('genres'))
-        venue.facebook_link = request.form['facebook_link']
-        venue.image_link = request.form['image_link']
-        venue.website = request.form['website']
-        venue.seeking_talent = request.form.get('seeking_talent') is not None
-        venue.seeking_description = request.form['seeking_description']
+        venue=Venue()
+        venue.name=request.form['name']
+        venue.city=request.form['city']
+        venue.state=request.form['state']
+        venue.address=request.form['address']
+        venue.phone=request.form['phone']
+        venue.genres=','.join(request.form.getlist('genres'))
+        venue.facebook_link=request.form['facebook_link']
+        venue.image_link=request.form['image_link']
+        venue.website=request.form['website']
+        venue.seeking_talent=request.form.get('seeking_talent') is not None
+        venue.seeking_description=request.form['seeking_description']
         db.session.add(venue)
         db.session.commit()
     except:
-        error = True
+        error=True
         db.session.rollback()
         print(sys.exc_info())
     finally:
@@ -142,16 +146,16 @@ def create_venue_submission():
         return render_template('pages/home.html')
 
 
-@app.route('/venues/<venue_id>', methods=['DELETE'])
+@app.route('/venues/<venue_id>', methods = ['DELETE'])
 def delete_venue(venue_id):
-    error = False
+    error=False
     try:
-        venue = Venue.query.get(venue_id)
-        name = venue.name
+        venue=Venue.query.get(venue_id)
+        name=venue.name
         db.session.delete(venue)
         db.session.commit()
     except:
-        error = True
+        error=True
         db.session.rollback()
         print(sys.exc_info())
     finally:
@@ -168,15 +172,15 @@ def delete_venue(venue_id):
 #  ----------------------------------------------------------------
 @app.route('/artists')
 def artists():
-    data = Artist.query.all()
-    return render_template('pages/artists.html', artists=data)
+    data=Artist.query.all()
+    return render_template('pages/artists.html', artists = data)
 
 
-@app.route('/artists/search', methods=['POST'])
+@app.route('/artists/search', methods = ['POST'])
 def search_artists():
-    search_term = request.form.get('search_term')
+    search_term=request.form.get('search_term')
     if search_term:
-        results = Artist.query.filter(
+        results=Artist.query.filter(
             Artist.name.ilike('%{}%'.format(search_term))).all()
         data = [result.serialize() for result in results]
         response = {
@@ -328,6 +332,10 @@ def create_artist_form():
 
 @app.route('/artists/create', methods=['POST'])
 def create_artist_submission():
+    form = ArtistForm()
+    if not form.validate():
+        flash(form.errors)
+        return render_template('forms/new_artist.html', form=form)
     error = False
     try:
         artist = Artist()
