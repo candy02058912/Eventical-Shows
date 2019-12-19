@@ -6,6 +6,8 @@
 		<h1 class="monospace">
 			{{ artist.name }}
 		</h1>
+		<a href="/artists/{{artist.id}}/edit" class="btn btn-primary">Edit Artist</a>
+    	<button id="delete-artist" class="btn btn-primary">Delete Artist</button>
 		<p class="subtitle">
 			ID: {{ artist.id }}
 		</p>
@@ -40,7 +42,9 @@
 		{% endif %}
 	</div>
 	<div class="col-sm-6">
-		<img src="{{ artist.image_link }}" alt="Venue Image" />
+		{% if artist.image_link %}
+    <img src="{{ artist.image_link }}" alt="Artist Image" />{% else %}No Images{%
+    endif %}
 	</div>
 </div>
 <section>
@@ -73,4 +77,15 @@
 </section>
 
 {% endblock %}
-
+{% block script %}
+<script>
+  $("#delete-artist").click(() => {
+    $.ajax({
+      method: "DELETE",
+      url: "/artists/{{artist.id}}"
+    }).done(function(page) {
+      document.write(page);
+    });
+  });
+</script>
+{% endblock %}
