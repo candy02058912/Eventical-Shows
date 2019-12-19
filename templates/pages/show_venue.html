@@ -56,7 +56,7 @@ block content %}
   </div>
   <div class="col-sm-6">
     {% if venue.image_link %}
-    <img src="{{ venue.image_link }}" alt="Venue Image" />{% else %}No Images{%
+    <img src="{{ venue.image_link }}" alt="Venue Image" />{% else %}No Image{%
     endif %}
   </div>
 </div>
@@ -69,7 +69,11 @@ block content %}
     {% for show in venue.upcoming_shows %}
     <div class="col-sm-4">
       <div class="tile tile-show">
+        {% if show.artist_image_link %}
         <img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
+        {% else %}
+        No Image
+        {% endif %}
         <h5>
           <a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a>
         </h5>
@@ -88,7 +92,11 @@ block content %}
     {%for show in venue.past_shows %}
     <div class="col-sm-4">
       <div class="tile tile-show">
+        {% if show.artist_image_link %}
         <img src="{{ show.artist_image_link }}" alt="Show Artist Image" />
+        {% else %}
+        No Image
+        {% endif %}
         <h5>
           <a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a>
         </h5>

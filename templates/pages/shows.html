@@ -5,8 +5,12 @@
     {%for show in shows %}
     <div class="col-sm-4">
         <div class="tile tile-show">
+            {% if show.artist_image_link %}
             <img src="{{ show.artist_image_link }}" alt="Artist Image" />
-            <h4>{{ show.start_time|datetime('full') }}</h4>
+            {% else %}
+            No Image
+            {% endif %}
+            <h4>{{ show.start_time|datetime('medium') }}</h4>
             <h5><a href="/artists/{{ show.artist_id }}">{{ show.artist_name }}</a></h5>
             <p>playing at</p>
             <h5><a href="/venues/{{ show.venue_id }}">{{ show.venue_name }}</a></h5>
